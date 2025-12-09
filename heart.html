@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	.myhearts{
+		width: 100px;
+		height:100px;
+		display:inline-block;
+		display: inline-block;
+		background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnWREXO09pRytMre-zECF7rIBUM7ZyMse-OA&s);
+		background-size: contain;
+		background-repeat:no-repeat;
+	}
+</style>
+</head>
+<body>
+
+<script type="text/javascript">
+	
+function makeHeart(){
+	let heart = document.createElement("div")
+	document.body.appendChild(heart)
+	heart.classList.add("myhearts")
+}
+
+document.addEventListener("click", makeHeart)
+
+
+</script>
+
+
+
+
+</body>
+</html>
