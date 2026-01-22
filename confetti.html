@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.confetti{
+	width: 10px;
+	height: 60px;
+	background-color: lightpink;
+	display:inline-block;
+	border: 5px solid hotpink;
+	position: absolute;
+		animation-name:swing3d;
+
+	animation-duration: .5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	transition:.1s;
+
+
+}
+
+@keyframes swing{
+
+	from{transform:rotate(var(--startRot));}
+
+	to{transform:rotate(var(--endRot))}
+}
+@keyframes swing3d {
+	from {
+		transform: RotateZ(-65deg) RotateY(-180deg);
+	}
+	to { 
+		transform: RotateZ(65deg) rotateY(180deg);
+	 }
+	}
+}
+
+</style>
+
+
+</head>
+<body>
+
+	<script type="text/javascript">
+		
+
+function makeConfetti (){
+	let square = document.createElement("div") 
+	square.classList.add("confetti")
+	document.body.appendChild(square)
+	let r= Math.round(Math.random()*255)
+	 let g= Math.round(Math.random()*255)
+	let b= Math.round(Math.random()*255)
+
+	square.style.backgroundColor="rgb("+r+","+g+","+b+")"
+	square.style.left = Math.round(Math.random()*1200)+"px"
+	square.style.top = Math.round(Math.random()*100)+"px"
+
+	function fall(){
+		square.style.top = parseInt(square.style.top)+10+"px"
+	}
+
+	setInterval(fall, 70)
+
+	let startRot = Math.random()*-60+"deg"
+		let endRot = Math.random()*60+"deg"
+
+
+	square.style.setProperty("--startRot", startRot)
+		square.style.setProperty("--endRot", endRot)
+
+
+} //end of makeConfetti function
+
+setInterval(makeConfetti, 200)
+
+
+
+
+</script>
+
+</body>
+</html>

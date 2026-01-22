@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+ #rami{
+ 	width: 100px;
+ 	height: 100px;
+ 	border-radius: 50%;
+ 	background-size: contain;
+ 	background-repeat: no-repeat;
+ 	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtCcVX1zXxgDbyuDSW14KitvJLJALUW4o6Bw&s);
+ 	position: absolute;
+ 	left: 100px;
+ 	top: 200px;
+ 	transition: .5s;
+ }
+
+
+	</style>
+</head>
+<body>
+
+
+<div id="rami">
+
+
+ <script type="text/javascript">
+ 	rami.style.width="100px"
+ 	rami.style.height="100px"
+
+ 	function movingRami(){
+ 	rami.style.left = Math.random()*1000+"px"
+ 	rami.style.top = Math.random()*1000+"px"
+ 	}
+
+ 	rami.addEventListener("click", function(){
+ 		rami.style.height+ parseInt(rami.style.height)*2+"px"
+ 		rami.style.width+ parseInt(rami.style.width)*2+"px"
+ 	})
+ 	setInterval(movingRami, 1000)
+
+
+
+ </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
