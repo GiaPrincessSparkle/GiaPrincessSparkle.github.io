@@ -14,7 +14,7 @@
 	animation-duration: .5s;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
-	transition:.1s;
+	/*transition:.1s;*/
 
 
 }
@@ -40,24 +40,47 @@
 
 </head>
 <body>
+	<button id= "btn"> drop confetti </button>
+	<input type="color" value="#ff0000" id="colorPicker">
+	<input type="range" min="1" max="100" step="1" value="10" id="slider">
 
 	<script type="text/javascript">
-		
+		let mycolors = ["pink", "lightpink", "lightblue", "purple", "lightgreen", "lightyellow"]
+		console.log(mycolors)
+			// colors[0], colors[1], colors[2], colors[3], colors[4], colors[5]
+
+
+		let dropConfettiBtn = document.getElementById("btn")
+		let colorPicker = document.getElementById("colorPicker")
+		console.log(colorPicker.value)
+		let slider = document.getElementById("slider")
+		console.log(slider.value)
+
+
 
 function makeConfetti (){
 	let square = document.createElement("div") 
 	square.classList.add("confetti")
 	document.body.appendChild(square)
+
 	let r= Math.round(Math.random()*255)
 	 let g= Math.round(Math.random()*255)
 	let b= Math.round(Math.random()*255)
 
-	square.style.backgroundColor="rgb("+r+","+g+","+b+")"
-	square.style.left = Math.round(Math.random()*1200)+"px"
-	square.style.top = Math.round(Math.random()*100)+"px"
+	let randomColorIndex = Math.floor(Math.random() * mycolors.length)
+	console.log(randomColorIndex)
+	// square.style.backgroundColor = mycolors[randomColorIndex]
+	square.style.backgroundColor = colorPicker.value
+	//square.style.backgroundColor="rgb("+r+","+g+","+b+")"
+	square.style.left = Math.round(Math.random()*1500)+"px"
+	square.style.top = Math.round(Math.random()*1500)+"px"
 
 	function fall(){
 		square.style.top = parseInt(square.style.top)+10+"px"
+		// if top is larger than 1000px, we set top to 0px
+		if (parseInt(square.style.top) > 1000) {
+			square.style.top = '10px'
+		}
 	}
 
 	setInterval(fall, 70)
@@ -72,10 +95,17 @@ function makeConfetti (){
 
 } //end of makeConfetti function
 
-setInterval(makeConfetti, 200)
+//setInterval(makeConfetti, 200)
 
 
 
+dropConfettiBtn.addEventListener("click", function(){
+	console.log("i click it")
+	for(let i = 1; i <= 100; i++) {
+		makeConfetti()
+
+	}
+})
 
 </script>
 
