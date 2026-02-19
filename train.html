@@ -57,18 +57,15 @@
 <body>
 
 	<div id ="train">
-		<div class="cart">alex</div>
-		<div class="cart">gia</div>
-		<div class="cart">theo</div>
-</div>
-
-
+		
+	</div>
 
 
 
 
 
 	<input type="text" id="person">
+	<input type ="color" value="#ff0000" id="colorPicker">
 	<button id="add-person">add person</button>
 
 	<button id ="remove-person">remove person</button>
@@ -77,17 +74,69 @@
 	<script>
 
 		
-		let people = ["alex", "gia", "theo"]
-		people.push("kevin")
-		people.push("arjun")
-		people.pop()
+		//let people = ["alex", "gia", "theo", "lexi"]
+		
+		let train = document.getElementById("train")
+		
+		let gia = {
+			name:"gia",
+			studentID:"c28gs",
+			fav_color:"lightpink"
+}
+		let alex = {
+			name:"alex",
+			studentId:"c29at",
+			fav_color:"lightblue"
+		}
+		let timmy = {
+			name:"timmy",
+			studentId:"c29tc",
+			fav_color:"lightgreen"
+		}
+	
+		
+		let people = [
+			gia,
+			alex,
+			timmy,
+			{name: "kevin", studentId: "c29ks", fav_color:"green"}
+		]
+
+		people.push({
+			name:"lexi",
+			fav_color:"pink"
+
+		})
+
 		console.log(people)
+
+		function makeTrain(){
+			train.innerHTML=""
+		for(let i = 0; i < people.length; i++) {
+			console.log(people[i])
+			let cart = document.createElement("div")
+			cart.textContent = people[i].name
+			cart.style.backgroundColor = people[i].fav_color
+			cart.classList.add("cart")
+			train.appendChild(cart)
+
+		}
+	}
+
+	makeTrain()
+	
 
 		let addPersonBtn = document.getElementById("add-person")
 		addPersonBtn.addEventListener("click", function(){
 			let personInput = document.getElementById("person")
+			//let colorPicker = document.getElementById("colorPicker")
+			people.push({
+				name: personInput.value,
+				fav_color: colorPicker.value
+			})
 			console.log(personInput.value)
-			people.push(personInput.value)
+		
+			makeTrain()
 			console.log(people)
 		})
 
@@ -96,7 +145,8 @@
 		removePersonBtn.addEventListener("click", function(){
 		let removepersonInput = document.getElementById("person")
 		console.log(removepersonInput.value)
-		people.pop(removepersonInput.value)
+		people.pop()
+		makeTrain()
 		console.log(people)
 		})
 
