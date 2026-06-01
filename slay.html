@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            width: 600px;
+            height: 200px;
+            border-bottom: 2px solid #535353;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        #dino {
+            width: 40px;
+            height: 43px;
+            background-color: #FF69B4; 
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+        }
+
+        .cactus {
+            width: 20px;
+            height: 40px;
+            background-color: #FFC0CB; 
+            position: absolute;
+            bottom: 0;
+            left: 600px;
+        }
+        .grow {
+            animation-name: big;
+            animation-duration: 0.5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        @keyframes big {
+            0% {
+                transform: scale(1.0);
+            }
+            100% {
+                transform: scale(1.5);
+            }
+        }
+
+        #score-board {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #535353;
+        }
+
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #535353;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="dino"></div>
+    <div id="score-board">Score: 0</div>
+    <div id="game-over">GAME OVER<br><span style="font-size: 14px;">Press Space to Restart</span></div>
+</div>
+
+<script>
+    const dino = document.getElementById("dino");
+    const container = document.getElementById("game-container");
+    const scoreBoard = document.getElementById("score-board");
+    const gameOverScreen = document.getElementById("game-over");
+
+    // Game variables
+    let isJumping = false;
+    let gravity = 0.6;
+    let position = 0; // heght from ground of dinoo
+    let velocity = 0;
+    let score = 0;
+    let isGameOver = false;
+    let obstacleTimeout;
+    let gameLoopId;
+
+    // 
+    document.addEventListener("keydown", function(event) {
+        if (event.code === "Space") {
+            if (isGameOver) {
+                resetGame();
+            } else if (!isJumping) {
+                jump();
+            }
+        }
+    });
+
+    function jump() {
+        isJumping = true;
+        velocity = 10; // Jump strength
+    }
+
+    // main physis and game update
+    function updateGame() {
+        if (isGameOver) return;
+
+        //  idno jump Physics
+        if (isJumping) {
+            velocity -= gravity;
+            position += velocity;
+
+            if (position <= 0) {
+                position = 0;
+                isJumping = false;
+                velocity = 0;
+            }
+            dino.style.bottom = position + "px";
+        }
+
+        // Score Tracking
+        score++;
+        scoreBoard.innerText = "Score: " + Math.floor(score / 5);
+
+        // collision Detection - obstacle movement
+        const obstacles = document.querySelectorAll(".cactus");
+        obstacles.forEach(obstacle => {
+            let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
+            
+            // Move obstacle left
+            obstacle.style.left = (obstacleLeft - 6) + "px"; 
+
+            // Remove obstacle if it goes off screen
+            if (obstacleLeft < -20) {
+                obstacle.remove();
+            }
+
+
+            // Dino left: 50, width: 40 -> spans 50 to 90
+            if (obstacleLeft > 50 && obstacleLeft < 90 && position < 40) {
+                endGame();
+            }
+        });
+
+        gameLoopId = requestAnimationFrame(updateGame);
+    }
+
+    // Spawn obstacles at random intervals
+    function spawnObstacle() {
+        if (isGameOver) return;
+
+        const obstacle = document.createElement("div");
+        obstacle.classList.add("cactus");
+        if (Math.random() < 0.5) {
+            obstacle.classList.add("grow")
+        }
+        container.appendChild(obstacle);
+
+        // Random delay between 1 to 3 seconds for next spawn
+        let randomTime = Math.random() * 2000 + 1000;
+        obstacleTimeout = setTimeout(spawnObstacle, randomTime);
+    }
+
+    function endGame() {
+        isGameOver = true;
+        gameOverScreen.style.display = "block";
+        clearTimeout(obstacleTimeout);
+        cancelAnimationFrame(gameLoopId);
+    }
+
+    function resetGame() {
+        isGameOver = false;
+        score = 0;
+        position = 0;
+        isJumping = false;
+        velocity = 0;
+        dino.style.bottom = "0px";
+        gameOverScreen.style.display = "none";
+        
+        // Clear existing obstacles
+        const obstacles = document.querySelectorAll(".cactus");
+        obstacles.forEach(obs => obs.remove());
+
+        // Restart loops
+        updateGame();
+        spawnObstacle();
+    }
+
+    // Start the game initially
+    updateGame();
+    spawnObstacle();
+</script>
+
+</body>
+</html>
